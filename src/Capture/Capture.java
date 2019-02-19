@@ -270,7 +270,7 @@ public class Capture extends javax.swing.JFrame {
 
         int counter = 0;
         for (File image : files) {
-            Mat photo = imread(image.getAbsolutePath(), Imgproc.COLOR_RGB2GRAY);
+            Mat photo = imread(image.getAbsolutePath(), COLOR_BGRA2GRAY);
             int idP = Integer.parseInt(image.getName().split("\\.")[1]);
             opencv_imgproc.resize(photo, photo, new Size(160, 160));
 
