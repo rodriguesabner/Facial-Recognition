@@ -78,7 +78,6 @@ public class Capture extends javax.swing.JFrame {
         counterLabel = new javax.swing.JLabel();
         saveButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -106,7 +105,7 @@ public class Capture extends javax.swing.JFrame {
         saveButton.setForeground(new java.awt.Color(255, 255, 255));
         saveButton.setText("Capture");
         saveButton.setContentAreaFilled(false);
-        saveButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        saveButton.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         saveButton.setOpaque(true);
         jPanel2.add(saveButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 100, -1));
 
@@ -114,19 +113,11 @@ public class Capture extends javax.swing.JFrame {
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setText("Close");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 10, -1, -1));
-
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(153, 153, 153));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("CAPTURE 25 SNAPSHOTS");
-        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 40));
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 0, 250, 40));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 380, 40));
 
@@ -135,10 +126,6 @@ public class Capture extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(397, 610));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        stopCamera();
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -175,7 +162,6 @@ public class Capture extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel counterLabel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
