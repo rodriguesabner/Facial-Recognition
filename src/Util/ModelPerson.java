@@ -1,22 +1,23 @@
 package Util;
 
 public class ModelPerson {
-    
+
     private int id;
-    private String first_name;
-    private String last_name;
-    private String dob;
-    private String office;
+    private String first_name, last_name, dob, office, facebook, instagram, linkedin, github;
 
     public ModelPerson() {
     }
 
-    public ModelPerson(int id, String first_name, String last_name, String dob, String office) {
+    public ModelPerson(int id, String first_name, String last_name, String dob, String office, String facebook, String instagram, String linkedin, String github) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.dob = dob;
         this.office = office;
+        this.facebook = facebook;
+        this.instagram = instagram;
+        this.linkedin = linkedin;
+        this.github = github;
     }
 
     public int getId() {
@@ -59,9 +60,36 @@ public class ModelPerson {
         this.office = office;
     }
 
+    public String getFacebook() {
+        return facebook;
+    }
 
-    
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
+    }
 
-    
+    public String getInstagram() {
+        return instagram;
+    }
+
+    public void setInstagram(String instagram) {
+        this.instagram = instagram;
+    }
+
+    public String getLinkedin() {
+        return linkedin;
+    }
+
+    public void setLinkedin(String linkedin) {
+        this.linkedin = linkedin;
+    }
+
+    public String getGithub() {
+        return github;
+    }
+
+    public void setGithub(String github) {
+        this.github = github;
+    }
+
 }
-
