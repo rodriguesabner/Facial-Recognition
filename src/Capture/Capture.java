@@ -3,19 +3,9 @@ package Capture;
 import Util.ConectaBanco;
 import Util.ControlPerson;
 import Util.ModelPerson;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.nio.IntBuffer;
-import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.Rect;
-import org.bytedeco.javacpp.opencv_objdetect;
 import org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
 import org.bytedeco.javacpp.opencv_videoio.VideoCapture;
 import java.awt.Graphics;
@@ -28,16 +18,13 @@ import java.io.IOException;
 import java.nio.IntBuffer;
 import javax.imageio.ImageIO;
 import org.bytedeco.javacpp.BytePointer;
-import org.bytedeco.javacpp.opencv_core;
 import static org.bytedeco.javacpp.opencv_core.CV_32SC1;
 import org.bytedeco.javacpp.opencv_core.MatVector;
 import org.bytedeco.javacpp.opencv_core.RectVector;
 import org.bytedeco.javacpp.opencv_core.Scalar;
 import org.bytedeco.javacpp.opencv_core.Size;
-import org.bytedeco.javacpp.opencv_face;
 import org.bytedeco.javacpp.opencv_face.FaceRecognizer;
 import org.bytedeco.javacpp.opencv_face.LBPHFaceRecognizer;
-import static org.bytedeco.javacpp.opencv_imgcodecs.CV_LOAD_IMAGE_GRAYSCALE;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imencode;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imwrite;
@@ -45,6 +32,7 @@ import org.bytedeco.javacpp.opencv_imgproc;
 import static org.bytedeco.javacpp.opencv_imgproc.COLOR_BGRA2GRAY;
 import static org.bytedeco.javacpp.opencv_imgproc.cvtColor;
 import static org.bytedeco.javacpp.opencv_imgproc.rectangle;
+import org.opencv.imgproc.Imgproc;
 
 public class Capture extends javax.swing.JFrame {
 
@@ -53,7 +41,7 @@ public class Capture extends javax.swing.JFrame {
     //JavaCV
     VideoCapture webSource = null;
     Mat cameraImage = new Mat();
-    CascadeClassifier cascade = new CascadeClassifier("C:\\photos\\haarcascade_frontalface_alt.xml");
+    CascadeClassifier cascade = new CascadeClassifier("C://photos//haarcascade_frontalface_alt.xml");
     BytePointer mem = new BytePointer();
     RectVector detectedFaces = new RectVector();
 
@@ -180,10 +168,8 @@ public class Capture extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Capture().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Capture().setVisible(true);
         });
     }
 
@@ -284,7 +270,7 @@ public class Capture extends javax.swing.JFrame {
 
         int counter = 0;
         for (File image : files) {
-            Mat photo = imread(image.getAbsolutePath(), CV_LOAD_IMAGE_GRAYSCALE);
+            Mat photo = imread(image.getAbsolutePath(), Imgproc.COLOR_RGB2GRAY);
             int idP = Integer.parseInt(image.getName().split("\\.")[1]);
             opencv_imgproc.resize(photo, photo, new Size(160, 160));
 

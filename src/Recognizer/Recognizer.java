@@ -14,7 +14,6 @@ import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.opencv_core;
-import static org.bytedeco.javacpp.opencv_core.FONT_HERSHEY_PLAIN;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.Point;
 import org.bytedeco.javacpp.opencv_core.Rect;
@@ -208,9 +207,6 @@ public class Recognizer extends javax.swing.JFrame {
                                     idPerson = prediction;
                                     rec();
                                 }
-                                int x = Math.max(dadosFace.tl().x() - 10, 0);
-                                int y = Math.max(dadosFace.tl().y() - 10, 0);
-                                putText(cameraImage, nome, new Point(x, y), FONT_HERSHEY_PLAIN, 1.4, new Scalar(0, 255, 0, 1));
                             }
 
                             imencode(".bmp", cameraImage, mem);
