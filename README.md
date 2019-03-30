@@ -20,9 +20,17 @@ Netbeans 8.2 or greater
 * [JavaCV](https://github.com/bytedeco/javacv) - Official JavaCV API
 * [KGradient](https://drive.google.com/open?id=1IRTDv7VYHo6uMZ0rYEbE-KIq_NVgJYNJ) - KGradient API
 
-### How to use KGradientPanel:
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be
+
+```
 Open Netbeans Create your Swing application, head to Palette right click and select Palette Manager select Add From Jar and browse to the location of the downloaded jar file. Select and proceed, select KGradientPanel component proceed to select the category and hit Finish.
+
 Open your JFrame drag KGradientPanel to it and set the following properties in the properties window.
+```
 
 ## Authors
 
