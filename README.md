@@ -33,8 +33,10 @@ Open your JFrame drag KGradientPanel to it and set the following properties in t
 * Login
 ![screenshot_8](https://user-images.githubusercontent.com/40338524/53055191-8d741300-3485-11e9-9fee-0032386ea1b5.png)
 
- User: any <br/>
+```
+ User: Anything
  Password: admin
+ ```
 
 * Menu Screen
 ![image](https://user-images.githubusercontent.com/40338524/53055292-e774d880-3485-11e9-9790-e2a0a9f698b5.png)
