@@ -49,3 +49,7 @@ Open your JFrame drag KGradientPanel to it and set the following properties in t
 
 * And more...
  Features: click the button and open social network, send system message to Whatsapp.
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE.md](https://github.com/king-aspx/Facial-Recognition/blob/master/LICENSE) file for details
