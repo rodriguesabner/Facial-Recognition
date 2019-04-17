@@ -30,6 +30,8 @@ Open your JFrame drag KGradientPanel to it and set the following properties in t
 ## Authors
 
 * **Abner Rodrigues** - *Initial work* - [King Aspx](https://github.com/king-aspx)
+* **Roman Beskrovnyi** - *Contribuition* - [romankh3](https://github.com/romankh3)
+romankh3
 
 ## Project Images
 
