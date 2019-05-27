@@ -1,4 +1,4 @@
-# Facial Recognition
+# Facial Recognition v2
 
 Detect and recognize faces using an interface in Java
 
