@@ -28,10 +28,16 @@ Java 1.8 or greater
 Netbeans 8.2 or greater
 ```
 
+## Database
+
+```
+In the project there is a file called: facial_recognition.sql, create a database named "facial_recognition" and import this file.
+Login: admin, admin OR abner, abner.
+```
+
 ## Libs
 
-* [JavaCV](https://drive.google.com/file/d/1diX9YS8B8TZ7EjaGBtrWNuj75fndIKdJ/view?usp=sharing) - JavaCV API
-* [KGradient](https://drive.google.com/open?id=1IRTDv7VYHo6uMZ0rYEbE-KIq_NVgJYNJ) - KGradient API
+* All libraries are in the project!
 
 ### Installing KGrandient
 
