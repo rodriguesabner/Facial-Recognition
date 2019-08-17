@@ -15,7 +15,15 @@ import javax.swing.JOptionPane;
 import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.opencv_core;
 import static org.bytedeco.javacpp.opencv_core.CV_32SC1;
-import org.bytedeco.javacpp.opencv_face;
+import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacpp.opencv_core.MatVector;
+import org.bytedeco.javacpp.opencv_core.Rect;
+import org.bytedeco.javacpp.opencv_core.RectVector;
+import org.bytedeco.javacpp.opencv_core.Scalar;
+import org.bytedeco.javacpp.opencv_core.Size;
+import static org.bytedeco.javacpp.opencv_core.flip;
+import org.bytedeco.javacpp.opencv_face.FaceRecognizer;
+import org.bytedeco.javacpp.opencv_face.LBPHFaceRecognizer;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imencode;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imread;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imwrite;
@@ -23,31 +31,44 @@ import org.bytedeco.javacpp.opencv_imgproc;
 import static org.bytedeco.javacpp.opencv_imgproc.COLOR_BGRA2GRAY;
 import static org.bytedeco.javacpp.opencv_imgproc.cvtColor;
 import static org.bytedeco.javacpp.opencv_imgproc.rectangle;
+import org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
 import org.bytedeco.javacpp.opencv_videoio;
+import org.bytedeco.javacpp.opencv_videoio.VideoCapture;
 
+/**
+ * Method responsible for registering the users in the database.
+ * <br><br>
+ * Is a JDialog that you can register a person and register data like: name,
+ * surname, phone, post, and information about social network.
+ */
 public class RegisterPerson extends javax.swing.JDialog {
 
     private RegisterPerson.DaemonThread myThread = null;
 
     //JavaCV
-    opencv_videoio.VideoCapture webSource = null;
-    opencv_core.Mat cameraImage = new opencv_core.Mat();
-    org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier cascade = new org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier("C://photos//haarcascade_frontalface_alt.xml");
+    VideoCapture webSource = null;
+    Mat cameraImage = new opencv_core.Mat();
+    CascadeClassifier cascade = new CascadeClassifier("C://photos//haarcascade_frontalface_alt.xml");
 
     BytePointer mem = new BytePointer();
-    opencv_core.RectVector detectedFaces = new opencv_core.RectVector();
+    RectVector detectedFaces = new RectVector();
 
-    String root;
     int numSamples = 25, sample = 1, idPerson;
 
-    //Utils
+    //Connection
     ConectaBanco conecta = new ConectaBanco();
 
+    /**
+     * @param parent It's the JFrame that's calling it
+     * @param modal is a window that blocks access to other windows while it is
+     * not clicked.
+     */
     public RegisterPerson(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         showIdUser();
         startCamera();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -321,20 +342,35 @@ public class RegisterPerson extends javax.swing.JDialog {
     private javax.swing.JFormattedTextField txt_phone_number;
     // End of variables declaration//GEN-END:variables
 
-    private void showIdUser() {
+    /**
+     * This method reads the users registered in the database and adds the value
+     * of +1, if there is no registration, that is, if there are 0 records, the
+     * id will be 1.
+     */
+    private int showIdUser() {
+        int id = 0;
         conecta.conexao();
         conecta.executaSQL("SELECT * FROM person ORDER BY id DESC LIMIT 1");
         try {
             conecta.rs.first();
             txt_id_label.setText(String.valueOf(conecta.rs.getInt("id")));
-            int id = Integer.parseInt(txt_id_label.getText());
+            id = Integer.parseInt(txt_id_label.getText());
             id++;
             txt_id_label.setText(String.valueOf(id));
         } catch (NumberFormatException | SQLException e) {
+            e.printStackTrace();
         }
+        return id;
     }
 
-    class DaemonThread implements Runnable { //LINK CLASS IN DESCRIPTION
+    /**
+     * This class is responsible for: displaying the image in JLabel, Detect
+     * Face, and Save Images.
+     * <br><br>
+     * To understand more about the parameters used in the class, download
+     * JavaDOC from JavaCV.
+     */
+    class DaemonThread implements Runnable {
 
         protected volatile boolean runnable = false;
 
@@ -347,22 +383,22 @@ public class RegisterPerson extends javax.swing.JDialog {
                             webSource.retrieve(cameraImage);
                             Graphics g = label_photo.getGraphics(); //mostra a imagem no jlabel
 
-                            opencv_core.Mat imageColor = new opencv_core.Mat(); //imagem colorida
+                            Mat imageColor = new Mat(); //imagem colorida
                             imageColor = cameraImage;
 
-                            opencv_core.Mat imageGray = new opencv_core.Mat(); //imagem pb
+                            Mat imageGray = new Mat(); //imagem pb
                             cvtColor(imageColor, imageGray, COLOR_BGRA2GRAY);
-//                            flip(cameraImage, cameraImage, +1);
+                            flip(cameraImage, cameraImage, +1);
 
-                            opencv_core.RectVector detectedFaces = new opencv_core.RectVector(); //face detectada
-                            cascade.detectMultiScale(imageColor, detectedFaces, 1.1, 1, 0, new opencv_core.Size(150, 150), new opencv_core.Size(500, 500));
+                            RectVector detectedFaces = new RectVector(); //face detectada
+                            cascade.detectMultiScale(imageColor, detectedFaces, 1.1, 1, 1, new Size(150, 150), new Size(500, 500));
 
                             for (int i = 0; i < detectedFaces.size(); i++) { //repetição pra encontrar as faces
-                                opencv_core.Rect dadosFace = detectedFaces.get(0);
-                                rectangle(imageColor, dadosFace, new opencv_core.Scalar(255, 255, 255, 5));
+                                Rect dadosFace = detectedFaces.get(0);
+                                rectangle(imageColor, dadosFace, new Scalar(255, 255, 255, 5));
 
-                                opencv_core.Mat face = new opencv_core.Mat(imageGray, dadosFace);
-                                opencv_imgproc.resize(face, face, new opencv_core.Size(160, 160));
+                                Mat face = new Mat(imageGray, dadosFace);
+                                opencv_imgproc.resize(face, face, new Size(160, 160));
 
                                 if (saveButton.getModel().isPressed()) { //quando apertar o botão saveButton
                                     if (txt_first_name.getText().equals("") || txt_first_name.getText().equals(" ")) {
@@ -385,7 +421,7 @@ public class RegisterPerson extends javax.swing.JDialog {
                                             sample++;
                                         }
                                         if (sample > 25) {
-                                            generate(); //se a contagem for maior que 25, termina de tirar a foto, gera o arquivo
+                                            trainPhotos(); //se a contagem for maior que 25, termina de tirar a foto, gera o arquivo
                                             insertDatabase(); //insere os dados no banco
 
                                             System.out.println("File Generated");
@@ -422,18 +458,22 @@ public class RegisterPerson extends javax.swing.JDialog {
         }
     }
 
-    public void generate() {
+    /**
+     * This method reads the images that are saved in the folder, retrieves the
+     * ID of each photo and generates the "trainer" for the LBPH algorithm.
+     */
+    public void trainPhotos() {
         File directory = new File("C:\\photos\\");
         FilenameFilter filter = (File dir, String name1) -> name1.endsWith(".jpg") || name1.endsWith(".png");
 
-        File[] files = directory.listFiles(filter); //only our filter
-        opencv_core.MatVector photos = new opencv_core.MatVector(files.length);
-        opencv_core.Mat labels = new opencv_core.Mat(files.length, 1, CV_32SC1);
+        File[] files = directory.listFiles(filter);
+        MatVector photos = new MatVector(files.length);
+        Mat labels = new Mat(files.length, 1, CV_32SC1);
         IntBuffer labelsBuffer = labels.createBuffer();
 
         int counter = 0;
         for (File image : files) {
-            opencv_core.Mat photo = imread(image.getAbsolutePath(), COLOR_BGRA2GRAY);
+            Mat photo = imread(image.getAbsolutePath(), COLOR_BGRA2GRAY);
             int idP = Integer.parseInt(image.getName().split("\\.")[1]);
             opencv_imgproc.resize(photo, photo, new opencv_core.Size(160, 160));
 
@@ -442,11 +482,14 @@ public class RegisterPerson extends javax.swing.JDialog {
             counter++;
         }
 
-        opencv_face.FaceRecognizer lbph = opencv_face.LBPHFaceRecognizer.create();
+        FaceRecognizer lbph = LBPHFaceRecognizer.create();
         lbph.train(photos, labels);
         lbph.save("C:\\photos\\classifierLBPH.yml");
     }
 
+    /**
+     * This method inserts the information into the database.
+     */
     public void insertDatabase() {
         ControlPerson cod = new ControlPerson();
         ModelPerson mod = new ModelPerson();
@@ -463,17 +506,26 @@ public class RegisterPerson extends javax.swing.JDialog {
         cod.inserir(mod);
     }
 
+    /**
+     * This method turns off the software connection with your web cam.
+     */
     public void stopCamera() {
         myThread.runnable = false;
         webSource.release();
         dispose();
     }
 
+    /**
+     * This method connects the software to the web cam.
+     * <br><br>
+     * VideoCapture(0); is the default camera on your computer.
+     */
     public void startCamera() {
         new Thread() {
             @Override
             public void run() {
                 webSource = new opencv_videoio.VideoCapture(0);
+
                 myThread = new RegisterPerson.DaemonThread();
                 Thread t = new Thread(myThread);
                 t.setDaemon(true);

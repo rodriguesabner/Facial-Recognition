@@ -19,14 +19,20 @@ import org.bytedeco.javacpp.BytePointer;
 import org.bytedeco.javacpp.DoublePointer;
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.opencv_core;
-import org.bytedeco.javacpp.opencv_face;
+import org.bytedeco.javacpp.opencv_core.Mat;
+import org.bytedeco.javacpp.opencv_core.Rect;
+import org.bytedeco.javacpp.opencv_core.RectVector;
+import org.bytedeco.javacpp.opencv_core.Scalar;
+import org.bytedeco.javacpp.opencv_core.Size;
+import org.bytedeco.javacpp.opencv_face.FaceRecognizer;
+import org.bytedeco.javacpp.opencv_face.LBPHFaceRecognizer;
 import static org.bytedeco.javacpp.opencv_imgcodecs.imencode;
 import org.bytedeco.javacpp.opencv_imgproc;
 import static org.bytedeco.javacpp.opencv_imgproc.COLOR_BGRA2GRAY;
 import static org.bytedeco.javacpp.opencv_imgproc.cvtColor;
 import static org.bytedeco.javacpp.opencv_imgproc.rectangle;
-import org.bytedeco.javacpp.opencv_objdetect;
-import org.bytedeco.javacpp.opencv_videoio;
+import org.bytedeco.javacpp.opencv_objdetect.CascadeClassifier;
+import org.bytedeco.javacpp.opencv_videoio.VideoCapture;
 
 public class Recognizer extends javax.swing.JDialog {
 
@@ -36,10 +42,10 @@ public class Recognizer extends javax.swing.JDialog {
     private Recognizer.DaemonThread myThread = null;
 
     //JavaCV
-    opencv_videoio.VideoCapture webSource = null;
-    opencv_core.Mat cameraImage = new opencv_core.Mat();
-    opencv_objdetect.CascadeClassifier cascade = new opencv_objdetect.CascadeClassifier("C:\\photos\\haarcascade_frontalface_alt.xml");
-    opencv_face.FaceRecognizer recognizer = opencv_face.LBPHFaceRecognizer.create();
+    VideoCapture webSource = null;
+    Mat cameraImage = new opencv_core.Mat();
+    CascadeClassifier cascade = new CascadeClassifier("C:\\photos\\haarcascade_frontalface_alt.xml");
+    FaceRecognizer recognizer = LBPHFaceRecognizer.create();
 
     BytePointer mem = new BytePointer();
     opencv_core.RectVector detectedFaces = new opencv_core.RectVector();
@@ -57,7 +63,7 @@ public class Recognizer extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         recognizer.read("C:\\photos\\classifierLBPH.yml");
-        recognizer.setThreshold(280);
+        recognizer.setThreshold(80);
         startCamera();
     }
 
@@ -370,17 +376,17 @@ public class Recognizer extends javax.swing.JDialog {
                             webSource.retrieve(cameraImage);
                             Graphics g = label_photo.getGraphics();
 
-                            opencv_core.Mat imageGray = new opencv_core.Mat();
+                            Mat imageGray = new Mat();
                             cvtColor(cameraImage, imageGray, COLOR_BGRA2GRAY);
 
-                            opencv_core.RectVector detectedFace = new opencv_core.RectVector();
-                            cascade.detectMultiScale(imageGray, detectedFace, 1.1, 2, 0, new opencv_core.Size(150, 150), new opencv_core.Size(500, 500));
+                            RectVector detectedFace = new RectVector();
+                            cascade.detectMultiScale(imageGray, detectedFace, 1.1, 2, 0, new Size(150, 150), new Size(500, 500));
 
                             for (int i = 0; i < detectedFace.size(); i++) {
-                                opencv_core.Rect dadosFace = detectedFace.get(i);
-                                rectangle(cameraImage, dadosFace, new opencv_core.Scalar(0, 255, 0, 0));
-                                opencv_core.Mat faceCapturada = new opencv_core.Mat(imageGray, dadosFace);
-                                opencv_imgproc.resize(faceCapturada, faceCapturada, new opencv_core.Size(160, 160));
+                                Rect dadosFace = detectedFace.get(i);
+                                rectangle(cameraImage, dadosFace, new Scalar(0, 255, 0, 0));
+                                Mat faceCapturada = new Mat(imageGray, dadosFace);
+                                opencv_imgproc.resize(faceCapturada, faceCapturada, new Size(160, 160));
 
                                 IntPointer rotulo = new IntPointer(1);
                                 DoublePointer confidence = new DoublePointer(1);
@@ -471,7 +477,7 @@ public class Recognizer extends javax.swing.JDialog {
         new Thread() {
             @Override
             public void run() {
-                webSource = new opencv_videoio.VideoCapture(0);
+                webSource = new VideoCapture(0);
                 myThread = new Recognizer.DaemonThread();
                 Thread t = new Thread(myThread);
                 t.setDaemon(true);
