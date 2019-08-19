@@ -1,16 +1,11 @@
 package com.kingaspx.main;
 
-import com.kingaspx.capture.RegisterPerson;
-import com.kingaspx.dados.Data;
-import com.kingaspx.recognizer.Recognizer;
-import com.kingaspx.util.BrowserUtil;
+import com.kingaspx.capture.RegisterFace;
+import com.kingaspx.records.Data;
+import com.kingaspx.recognizer.RecognizeFace;
 import com.kingaspx.util.ConectaBanco;
 import com.kingaspx.util.RoundImage;
-import com.kingaspx.version.Version;
-import com.teamdev.jxbrowser.chromium.Browser;
-import com.teamdev.jxbrowser.chromium.events.ConsoleEvent;
-import com.teamdev.jxbrowser.chromium.swing.BrowserView;
-import java.awt.BorderLayout;
+import com.kingaspx.util.ChartDaily;
 import java.awt.Desktop;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -35,7 +30,7 @@ public class Menu extends javax.swing.JFrame {
         setIcon();
         new RoundImage().arredondarFoto(this, "pp.jpg", jLabel6, 190);
         refresh();
-        abrirSiteBasico();
+        add_chart_visitante();
     }
 
     private void setIcon() {
@@ -87,7 +82,7 @@ public class Menu extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Security System - Menu");
         setUndecorated(true);
 
@@ -117,7 +112,7 @@ public class Menu extends javax.swing.JFrame {
         txt_title_menu.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txt_title_menu.setForeground(new java.awt.Color(197, 203, 234));
         txt_title_menu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        txt_title_menu.setText("king-aspx");
+        txt_title_menu.setText("kingaspx");
         txt_title_menu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -384,10 +379,11 @@ public class Menu extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(131, 138, 148));
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/icons8_Donate_25px.png"))); // NOI18N
-        jLabel9.setText(" Donate Me");
+        jLabel9.setText("Daily Register");
 
+        kGradientPanel1.setBackground(new java.awt.Color(247, 247, 247));
         kGradientPanel1.setkEndColor(new java.awt.Color(72, 91, 200));
+        kGradientPanel1.setkFillBackground(false);
         kGradientPanel1.setkStartColor(new java.awt.Color(90, 207, 150));
         kGradientPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -407,6 +403,7 @@ public class Menu extends javax.swing.JFrame {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(kGradientPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 299, Short.MAX_VALUE))
         );
 
@@ -536,11 +533,11 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        new Recognizer(this, true).setVisible(true);
+        new RecognizeFace(this, true).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        new RegisterPerson(this, true).setVisible(true);
+        new RegisterFace(this, true).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -694,6 +691,10 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel txt_title_menu1;
     // End of variables declaration//GEN-END:variables
 
+    private void add_chart_visitante() {
+        new ChartDaily(kGradientPanel1);
+    }
+
     //Verify and count items
     int qtd_msg, qtd_person;
 
@@ -725,11 +726,14 @@ public class Menu extends javax.swing.JFrame {
     public void last_register() {
         conecta.conexao();
         try {
-            conecta.executaSQL("SELECT * FROM person ORDER BY id DESC LIMIT 1");
+            conecta.executaSQL("SELECT id, first_name, last_name, DATE_FORMAT(STR_TO_DATE(person.register_date, '%d/%m/%Y'), '%Y-%m-%d kk:mm:ss') AS register_date FROM person ORDER BY id DESC LIMIT 1");
             conecta.rs.first();
             jLabel23.setText(conecta.rs.getString("first_name") + " " + conecta.rs.getString("last_name"));
             String dateString = conecta.rs.getString("register_date");
+            System.out.println(dateString);
+
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
+            System.out.println(dateFormat.toString());
 
             Date convertedDate = new Date();
             PrettyTime p = new PrettyTime();
@@ -774,23 +778,6 @@ public class Menu extends javax.swing.JFrame {
                 last_register();
             }
         }, delay, interval);
-    }
-
-    public void abrirSiteBasico() {
-        //License Version
-        BrowserUtil.setVersion(Version.V6_22);
-
-        Browser browser = new Browser();
-        BrowserView view = new BrowserView(browser);
-
-        //Construindo o JFrame
-        kGradientPanel1.add(view, BorderLayout.CENTER);
-
-        browser.addConsoleListener((ConsoleEvent event) -> {
-        });
-
-        //Abrir url
-        browser.loadURL("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=R75XW28TWYFAJ&currency_code=BRL&source=url");
     }
 
 }
