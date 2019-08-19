@@ -37,9 +37,20 @@ Login: admin, admin OR abner, abner.
 ## Libs
 
 * JavaCV 1.5.1: https://github.com/bytedeco/javacv/releases
-
+```
 Extract javacv-bin in C:/
+Import:
 
+FFMPEG-plataform
+FFMPEG-Windows-x86_64
+FFMPEG
+JavaCPP
+JavaCV-plataform
+JavaCV
+OpenCV-plataform
+OpenCV-Windows-x86_64
+OpenCV
+```
 ### Installing KGrandient
 
 
