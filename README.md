@@ -1,4 +1,4 @@
-# Facial Recognition v2
+# Facial Recognition v3
 
 Detect and recognize faces using an interface in Java
 
@@ -10,6 +10,7 @@ JXBrowser removed
 JFreeChart added
 Interface updated
 Custom Rectangle (Detect Face)
+Database updated
 
 ```
 
