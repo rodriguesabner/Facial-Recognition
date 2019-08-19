@@ -5,14 +5,12 @@ Detect and recognize faces using an interface in Java
 ```
 What's new?
 
-JFrame maximized (option)
-JFrame swapped by JDialog
-JXBrowser added/used (Paypal)
-Login via MySQL
-Goals (Ex: 5 msgs sent)
-Newly registered person
-Message count (Saving to the database)
-Visualization of users registered in the database in real time
+Update JavaCV 1.5.1
+JXBrowser removed
+JFreeChart added
+Interface updated
+Custom Rectangle (Detect Face)
+
 ```
 
 ## Getting Started
@@ -37,7 +35,9 @@ Login: admin, admin OR abner, abner.
 
 ## Libs
 
-* All libraries are in the project!
+* JavaCV 1.5.1: https://github.com/bytedeco/javacv/releases
+
+Extract javacv-bin in C:/
 
 ### Installing KGrandient
 
@@ -50,7 +50,6 @@ Open your JFrame drag KGradientPanel to it and set the following properties in t
 
 * **Abner Rodrigues** - *Initial work* - [King Aspx](https://github.com/kingaspx)
 * **Roman Beskrovnyi** - *Contribuition* - [romankh3](https://github.com/romankh3)
-romankh3
 
 ## Project Images
 
@@ -61,19 +60,19 @@ romankh3
  User and Password in MySQL
  ```
 
-* Menu Screen (Normal and Maximized)
-![Screenshot_14](https://user-images.githubusercontent.com/40338524/58438088-69872580-80a3-11e9-84d2-b1a827b28d33.png)
-![Screenshot_2](https://user-images.githubusercontent.com/40338524/58438022-0d240600-80a3-11e9-84d6-48571992e744.png)
+* Menu Screen
+![Screenshot_7](https://user-images.githubusercontent.com/40338524/63235336-5b165900-c20f-11e9-96b1-98ed33a25f85.png)
 
 * Capture/Register Screen
-![Screenshot_11](https://user-images.githubusercontent.com/40338524/58438144-b79c2900-80a3-11e9-80c3-3e992774099a.png)
+![Screenshot_5](https://user-images.githubusercontent.com/40338524/63235298-3c17c700-c20f-11e9-94fd-183673cab4d7.png)
 
 * Recognition Screen
-![Screenshot_1](https://user-images.githubusercontent.com/40338524/58438287-7b1cfd00-80a4-11e9-8efc-88318dc1d161.png)
-![Screenshot_16](https://user-images.githubusercontent.com/40338524/58438261-59bc1100-80a4-11e9-94d8-78bbe4f094f2.png)
+![Screenshot_10](https://user-images.githubusercontent.com/40338524/63235390-8c8f2480-c20f-11e9-9363-c1a3850b6fbe.png)
+![Screenshot_8](https://user-images.githubusercontent.com/40338524/63235394-91ec6f00-c20f-11e9-843e-e02d1755244d.png)
+![Screenshot_11](https://user-images.githubusercontent.com/40338524/63235409-a0d32180-c20f-11e9-9d1c-56f7e53f69f6.png)
 
-* Data
-![Screenshot_13](https://user-images.githubusercontent.com/40338524/58438303-8ff99080-80a4-11e9-97ce-55f2c7447cab.png)
+* Records in Database (Data)
+![Screenshot_12](https://user-images.githubusercontent.com/40338524/63235361-741f0a00-c20f-11e9-84d1-ce5d2b5e1afb.png)
 
 * Send Message Screen
 ![Screenshot_15](https://user-images.githubusercontent.com/40338524/58438275-6d677780-80a4-11e9-8279-ce21e6e54ced.png)
